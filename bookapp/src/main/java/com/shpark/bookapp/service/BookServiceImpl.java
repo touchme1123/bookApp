@@ -84,6 +84,40 @@ public class BookServiceImpl implements BookService {
         return entityToDto(book);
     }
 
+    @Override
+    public void modify(BookDTO bookDTO) {
+        //조회
+        Optional<Book> result = bookRepository.findById(bookDTO.getBno());
+        Book book = result.orElseThrow();
+
+        //변경 내용 반영
+        book.setTitle(bookDTO.getTitle());
+        book.setInfo(bookDTO.getInfo());
+        book.setPrice(bookDTO.getPrice());
+        book.setInfo(bookDTO.getInfo());
+        book.setQuantity(bookDTO.getQuantity());
+        book.setDelFlag(bookDTO.isDelFlag());
+
+
+        //이미지 처리
+        List<String> uploadFileNames = bookDTO.getUploadFileNames();
+        book.clearList();
+
+        if (uploadFileNames != null && !uploadFileNames.isEmpty()) {
+            uploadFileNames.forEach(uploadName -> {
+                book.addImageString(uploadName);
+            });
+        }
+
+        //저장
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void remove(int bno) {
+        bookRepository.deleteByBno(bno);
+    }
+
     private BookDTO entityToDto(Book book) {
         BookDTO bookDTO = BookDTO.builder()
                 .bno(book.getBno())

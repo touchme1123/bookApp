@@ -13,4 +13,8 @@ public interface BookService {
     int register(BookDTO bookDTO);
 
     BookDTO get(int bno);
+
+    void modify(BookDTO bookDTO);
+
+    void remove(int bno);
 }

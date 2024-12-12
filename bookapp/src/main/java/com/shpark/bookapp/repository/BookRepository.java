@@ -21,8 +21,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> , BookSearc
     Optional<Book> findByBno(@Param("bno") Integer bno);
 
     @Modifying
-    @Query("update Book b set b.delFlag = :delFlag where b.bno = :bno")
-    void deleteByBnoAndDelFlag(@Param("bno") Integer bno, @Param("delFlag") boolean delFlag);
+    @Query("update Book b set b.delFlag = true where b.bno = :bno")
+    void deleteByBno(@Param("bno") Integer bno);
 
     @Query("select b from Book b left join b.imageList bi where bi.ord = 0 and b.delFlag = false ")
     Page<Object[]> findBy(Pageable pageable);
