@@ -1,6 +1,9 @@
 package com.shpark.bookapp.controller;
 
 import com.shpark.bookapp.dto.BookDTO;
+import com.shpark.bookapp.dto.PageRequestDTO;
+import com.shpark.bookapp.dto.PageResponseDTO;
+import com.shpark.bookapp.service.BookService;
 import com.shpark.bookapp.util.CustomFileUitl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,21 +22,40 @@ import java.util.Map;
 public class BookController {
 
     private final CustomFileUitl fileUitl;
+    private final BookService bookService;
 
     @PostMapping("/")
-    public Map<String,String> register(BookDTO bookDTO) {
+    public Map<String,Integer> register(BookDTO bookDTO) {
         log.info("-----register-----");
 
         List<MultipartFile> files = bookDTO.getFiles();
         List<String> uploadedFileNames = fileUitl.saveFiles(files);
 
-        bookDTO.setUploadedFileNames(uploadedFileNames);
+        bookDTO.setUploadFileNames(uploadedFileNames);
 
-        return Map.of("RESULT", "SUCCESS");
+        int bno = bookService.register(bookDTO);
+
+        return Map.of("RESULT", bno);
+    }
+
+    @GetMapping("/")
+    public PageResponseDTO<BookDTO> list(PageRequestDTO pageRequestDTO) {
+        log.info("-----list-----");
+        return bookService.getList(pageRequestDTO);
     }
 
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGet(@PathVariable("fileName") String fileName) {
         return fileUitl.getFile(fileName);
     }
+
+    @GetMapping("/{bno}")
+    public BookDTO read(@PathVariable("bno") Integer bno) {
+        log.info("-----read-----");
+        return bookService.get(bno);
+    }
+
+
+
+
 }
