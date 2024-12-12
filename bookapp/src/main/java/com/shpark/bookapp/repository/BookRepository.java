@@ -1,6 +1,7 @@
 package com.shpark.bookapp.repository;
 
 import com.shpark.bookapp.domain.Book;
+import com.shpark.bookapp.repository.search.BookSearch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> , BookSearch {
 
     @EntityGraph(attributePaths = "imageList")
     @Query("select b from Book b where b.bno = :bno")
