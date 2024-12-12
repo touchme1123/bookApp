@@ -1,16 +1,19 @@
 package com.shpark.bookapp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "imageList")
 public class Book {
 
     @Id
@@ -26,4 +29,25 @@ public class Book {
 
     private boolean delFlag;
 
+    @ElementCollection
+    @Builder.Default
+    private List<BookImage> imageList = new ArrayList<>();
+
+    public void addImage(BookImage image) {
+        image.setOrd(imageList.size());
+        imageList.add(image);
+
+    }
+
+    public void addImageString(String fileName) {
+        BookImage bookImage = BookImage.builder()
+                .fileName(fileName)
+                .build();
+
+        addImage(bookImage);
+    }
+
+    public void clearList() {
+        this.imageList.clear();
+    }
 }
