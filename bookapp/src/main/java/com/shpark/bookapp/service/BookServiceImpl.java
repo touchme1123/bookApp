@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
                 pageRequestDTO.getSize(),
                 Sort.by("bno").descending());
 
-        Page<Object[]> result = bookRepository.findBy(pageable);
+        Page<Object[]> result = bookRepository.selectList(pageable);
         // 0번째가 book 이고 1번째가 bookImage (반복)
 
         List<BookDTO> dtoList = result.get().map(arr -> {
@@ -115,7 +115,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void remove(int bno) {
-        bookRepository.deleteByBno(bno);
+        bookRepository.updateToDelete(bno, true);
     }
 
     private BookDTO entityToDto(Book book) {
@@ -154,7 +154,7 @@ public class BookServiceImpl implements BookService {
                 .build();
 
         List<String> uploadFileNames = bookDTO.getUploadFileNames();
-        if (uploadFileNames != null && !uploadFileNames.isEmpty()) {
+        if (uploadFileNames == null && uploadFileNames.isEmpty()) {
             return book;
         }
 

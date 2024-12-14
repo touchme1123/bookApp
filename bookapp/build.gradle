@@ -46,8 +46,6 @@ dependencies {
 
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
 
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
 
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'

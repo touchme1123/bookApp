@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootTest
 public class BookRepositoryTests {
@@ -17,23 +18,27 @@ public class BookRepositoryTests {
     @Test
     public void testInsert() {
 
-        for (int i = 0; i < 15; i++) {
             Book book = Book.builder()
-                    .title("test"+i)
-                    .info("test info"+i)
+                    .title("test")
+                    .info("test info")
                     .price(1000)
                     .quantity(100)
                     .delFlag(false)
                     .build();
 
+            book.addImageString(UUID.randomUUID().toString() + "_test.jpg");
             bookRepository.save(book);
-        }
-        Optional<Book> result = bookRepository.findByBno(1);
-        Book book = result.orElseThrow();
+
+
+        Optional<Book> result = bookRepository.selectOne(2);
+
         BookDTO bookDTO = new BookDTO().builder()
                 .title(book.getTitle())
                 .build();
 
+        bookDTO.getUploadFileNames();
+
         System.out.println(bookDTO);
     }
+
 }

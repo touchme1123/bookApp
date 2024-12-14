@@ -8,6 +8,7 @@ import java.util.List;
 
 
 @Entity
+@Table(name = "tbl_book")
 @Builder
 @Getter
 @Setter
@@ -28,6 +29,7 @@ public class Book {
     private int quantity, price;
 
     private boolean delFlag;
+
 
     @ElementCollection
     @Builder.Default

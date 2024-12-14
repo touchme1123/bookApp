@@ -26,17 +26,17 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-    public Map<String,Integer> register(BookDTO bookDTO) {
+    public int register(BookDTO bookDTO) {
         log.info("-----register-----");
 
         List<MultipartFile> files = bookDTO.getFiles();
-        List<String> uploadedFileNames = fileUitl.saveFiles(files);
+        List<String> uploadFileNames = fileUitl.saveFiles(files);
 
-        bookDTO.setUploadFileNames(uploadedFileNames);
+        bookDTO.setUploadFileNames(uploadFileNames);
 
         int bno = bookService.register(bookDTO);
 
-        return Map.of("RESULT", bno);
+        return bno;
     }
 
     @GetMapping("/")
